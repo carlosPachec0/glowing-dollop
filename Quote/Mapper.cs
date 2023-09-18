@@ -99,10 +99,12 @@ namespace Quote
                 activityServices = activityServices.Where(ts => selectedServicesCodes.Contains(ts.ServiceCode)).ToList();
                 tourQuotes = tourQuotes.Where(w => selectedServicesCodes.Contains(w.ContractService.ServiceCode)).ToList();
             }
+            //Test1
             var singleQuote = new TourQuote();
             if (tourQuotes.Count > 0) {
                 singleQuote = tourQuotes.First();
             }
+            //Test1
             var baseSelectedQuote = singleQuote;
 
             var margin = .25;
