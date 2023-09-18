@@ -73,10 +73,12 @@ namespace Quote
             var exchangeRate = 1;
             var tour = this.GetTour(request, activity.Activity);
             var tourQuotes = new List<TourQuote>();
-            //var modalities = activity.Activity.Modalities.ToList();//.Where(w => w.Questions == null || !w.Questions.Any()).ToList();
-            var modalities = activity.Activity.Modalities.Any(w => w.Questions == null || !w.Questions.Any())
-                            ? activity.Activity.Modalities.Where(w => w.Questions == null || !w.Questions.Any()).ToList()
-                            : activity.Activity.Modalities;
+
+            var modalities = activity.Activity.Modalities.Where(w => w.Questions == null || !w.Questions.Any()).ToList();
+
+            //var modalities = activity.Activity.Modalities.Any(w => w.Questions == null || !w.Questions.Any())
+            //                ? activity.Activity.Modalities.Where(w => w.Questions == null || !w.Questions.Any()).ToList()
+            //                : activity.Activity.Modalities;
 
             foreach (var modality in modalities)
             {
@@ -97,8 +99,12 @@ namespace Quote
                 activityServices = activityServices.Where(ts => selectedServicesCodes.Contains(ts.ServiceCode)).ToList();
                 tourQuotes = tourQuotes.Where(w => selectedServicesCodes.Contains(w.ContractService.ServiceCode)).ToList();
             }
+            var singleQuote = new TourQuote();
+            if (tourQuotes.Count > 0) {
+                singleQuote = tourQuotes.First();
+            }
+            var baseSelectedQuote = singleQuote;
 
-            var baseSelectedQuote = tourQuotes.First();
             var margin = .25;
             TourCalculatedQuote calculatedQuote = null;
             if (request.RetrieveOptions.GetCalculatedQuote)
